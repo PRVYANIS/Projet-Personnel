@@ -1,5 +1,3 @@
-package PROJET.Simulation;
-
 public class Client {
     private int id;
     private int tempsArrivee;

@@ -1,5 +1,3 @@
-package PROJET.Simulation;
-
 public class Main {
     public static void main(String[] args) {
         FileAttente file = new FileAttente();
