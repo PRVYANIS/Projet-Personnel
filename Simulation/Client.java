@@ -1,4 +1,4 @@
-package POOS4.PROJET_PERSONNEL;
+package PROJET.Simulation;
 
 public class Client {
     private int id;
