@@ -1,11 +1,11 @@
 // Renseigner ici les coordonnées et informations vérifiées avant publication.
 // Cette dénomination est une dénomination de travail, à valider.
 export const site = {
-  name: 'Bureau d’études Kamel Moulouel',
-  shortName: 'Kamel Moulouel',
+  name: 'Bureau d’études Kamal Moulouel',
+  shortName: 'Kamal Moulouel',
   tagline: 'Donner forme aux idées, avec méthode.',
   country: 'Algérie',
-  email: 'kamel.moulouel@gmail.com',
+  email: 'kamal.moulouel@gmail.com',
   phone: '',
   phoneDisplay: '+213 (0) 00 00 00 00',
   phoneProvisional: true,

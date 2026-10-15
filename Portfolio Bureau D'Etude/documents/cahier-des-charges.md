@@ -1,4 +1,4 @@
-# Cahier des charges — Site vitrine du Bureau d’études Kamel Moulouel
+# Cahier des charges — Site vitrine du Bureau d’études Kamal Moulouel
 
 **Version :** 1.0 — 15 octobre 2026  
 **Objet :** Document de cadrage pour conception UI/UX et développement.
@@ -17,7 +17,7 @@ Créer un site vitrine premium, moderne et crédible pour un bureau d’études 
 - Le discours et les visuels doivent prioriser la rigueur, la maîtrise des projets et la lisibilité technique plutôt qu’une approche uniquement décorative.
 
 ## 4. Positionnement et identité
-- **Dénomination de travail :** « Bureau d’études Kamel Moulouel » (orthographe et dénomination légale à valider).
+- **Dénomination de travail :** « Bureau d’études Kamal Moulouel » (orthographe et dénomination légale à valider).
 - **Style :** sobre, contemporain, élégant, technique, institutionnel sans être froid.
 - **Palette indicative :** bleu nuit `#101F32`, anthracite `#15191F`, blanc cassé `#F5F6F7`, gris acier `#8B98A7` ; accent discret à déterminer.
 - **Typographies proposées :** sans-serif contemporaine, très lisible, hiérarchie forte et espacement généreux.
@@ -67,7 +67,7 @@ Un site **one-page en français**, responsive, avec navigation par ancres vers l
 
 ## 10. Contenus à produire
 - Textes professionnels en français : titre principal, proposition de valeur, présentation, services, légendes et appels à l’action.
-- Le contenu métier devra être relu et approuvé par Kamel Moulouel ; ne pas inventer diplômes, agréments, références clients ou réalisations.
+- Le contenu métier devra être relu et approuvé par Kamal Moulouel ; ne pas inventer diplômes, agréments, références clients ou réalisations.
 - Prévoir une courte mention expliquant que les images génériques sont illustratives et non des projets réalisés.
 
 ## 11. Livrables attendus

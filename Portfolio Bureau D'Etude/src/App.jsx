@@ -67,7 +67,7 @@ function Header() {
   return <>
     <header className="site-header">
       <div className="header-inner container">
-        <a href="#accueil" className="brand"><span className="brand-descriptor">Bureau d’études</span><span className="brand-name">Kamel Moulouel<span className="brand-dot">.</span></span></a>
+        <a href="#accueil" className="brand"><span className="brand-descriptor">Bureau d’études</span><span className="brand-name">Kamal Moulouel<span className="brand-dot">.</span></span></a>
         <nav className="desktop-nav" aria-label="Navigation principale">{navigation.filter((item) => item.id !== 'accueil' && item.id !== 'contact').map((item) => <a key={item.id} href={`#${item.id}`} aria-current={active === item.id ? 'location' : undefined}>{item.label}</a>)}</nav>
         <a href="#contact" className="header-contact">Nous contacter<Icon name="diagonal" /></a>
         <button ref={trigger} className="menu-trigger" aria-label="Ouvrir le menu" aria-haspopup="dialog" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => { dialog.current.showModal(); setOpen(true) }}><Icon name="menu" /></button>
@@ -106,7 +106,7 @@ function Bureau() {
       <SectionLabel number="01">Le bureau</SectionLabel>
       <div className="intro-grid">
         <Reveal><h2 id="bureau-title">Des idées claires.<br /><span className="text-muted">Des bases solides.</span></h2></Reveal>
-        <Reveal delay={0.08}><p className="lead">Une approche du bâtiment où la réflexion technique donne du sens à chaque ligne.</p><p className="body-copy">À Azazga, le Bureau d’études Kamel Moulouel développe son identité autour d’une conviction : un projet se construit d’abord par la compréhension de ses enjeux, de son contexte et de ses contraintes.</p><p className="body-copy">Logements collectifs, ensembles résidentiels ou projets individuels : la lisibilité des choix et la cohérence d’ensemble guident cette démarche.</p><a href="#methode" className="text-link">Comprendre notre approche<Icon name="diagonal" /></a></Reveal>
+        <Reveal delay={0.08}><p className="lead">Une approche du bâtiment où la réflexion technique donne du sens à chaque ligne.</p><p className="body-copy">À Azazga, le Bureau d’études Kamal Moulouel développe son identité autour d’une conviction : un projet se construit d’abord par la compréhension de ses enjeux, de son contexte et de ses contraintes.</p><p className="body-copy">Logements collectifs, ensembles résidentiels ou projets individuels : la lisibilité des choix et la cohérence d’ensemble guident cette démarche.</p><a href="#methode" className="text-link">Comprendre notre approche<Icon name="diagonal" /></a></Reveal>
       </div>
       <Reveal className="bureau-visual">
         <Picture image={images.structure} sizes="(max-width: 760px) 100vw, 70vw" />
@@ -192,7 +192,7 @@ function Contact() {
 
 function Footer({ onLegal }) {
   return <footer className="site-footer"><div className="container">
-    <div className="footer-top"><a href="#accueil" className="brand footer-brand"><span className="brand-descriptor">Bureau d’études</span><span className="brand-name">Kamel Moulouel<span className="brand-dot">.</span></span></a><p>La précision technique.<br />La vision d’ensemble.</p><a href="#accueil" className="back-top">Retour en haut<Icon name="down" /></a></div>
+    <div className="footer-top"><a href="#accueil" className="brand footer-brand"><span className="brand-descriptor">Bureau d’études</span><span className="brand-name">Kamal Moulouel<span className="brand-dot">.</span></span></a><p>La précision technique.<br />La vision d’ensemble.</p><a href="#accueil" className="back-top">Retour en haut<Icon name="down" /></a></div>
     <div className="footer-bottom"><p>© {new Date().getFullYear()} · {site.name}</p><div><button onClick={() => onLegal('mentions')}>Mentions légales</button><button onClick={() => onLegal('privacy')}>Confidentialité</button></div><span>Azazga, Algérie</span></div>
     <p className="footer-disclaimer">Signature typographique et contenus métier provisoires, à valider. Visuels conceptuels générés par IA, sans référence à des projets réalisés.</p>
   </div></footer>

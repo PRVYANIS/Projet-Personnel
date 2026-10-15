@@ -1,6 +1,6 @@
-# Portfolio — Bureau d’études de Kamel Moulouel
+# Portfolio — Bureau d’études de Kamal Moulouel
 
-Site vitrine React en français consacré au bureau d’études de Kamel Moulouel. Le cahier des charges de référence est `documents/cahier-des-charges.md`.
+Site vitrine React en français consacré au bureau d’études de Kamal Moulouel. Le cahier des charges de référence est `documents/cahier-des-charges.md`.
 
 Les visuels présentent des illustrations générées par IA. Ils ne constituent pas des références de projets réalisés par le bureau.
 
@@ -89,7 +89,7 @@ Pour remplacer une illustration, mettre à jour son fichier source et, si son no
 
 Les informations publiques se modifient dans `src/data/site.js` :
 
-- Courriel : `kamel.moulouel@gmail.com`.
+- Courriel : `kamal.moulouel@gmail.com`.
 - Adresse : Rue des Chouhada, Azazga, Tizi Ouzou, Kabylie, Algérie.
 - Téléphone : le numéro provisoire commençant par `+213 (0)00…` est fictif et n’est pas cliquable.
 

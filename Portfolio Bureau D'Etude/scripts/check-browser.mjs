@@ -10,7 +10,7 @@ import AxeBuilder from '@axe-core/playwright'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const resultsDir = path.join(root, 'test-results')
 const baseURL = 'http://127.0.0.1:4174'
-const email = 'kamel.moulouel@gmail.com'
+const email = 'kamal.moulouel@gmail.com'
 const motionOnly = process.argv.includes('--motion-only')
 const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
