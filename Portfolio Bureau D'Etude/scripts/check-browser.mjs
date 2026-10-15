@@ -6,10 +6,16 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { resolveConfig } from 'vite'
+import { images as imageManifest } from '../src/data/images.js'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const resultsDir = path.join(root, 'test-results')
-const baseURL = 'http://127.0.0.1:4174'
+const viteConfig = await resolveConfig({ root }, 'serve', 'production')
+const origin = 'http://127.0.0.1:4174'
+const baseURL = new URL(viteConfig.base, origin).href
+const mediaPrefix = new URL('media/', baseURL).pathname
+const verifiedMedia = new Set()
 const email = 'kamal.moulouel@gmail.com'
 const motionOnly = process.argv.includes('--motion-only')
 const viewports = [
@@ -30,6 +36,7 @@ const report = {
   viewports: [],
   accessibility: [],
   pageErrors: [],
+  media: { checkedURLs: [], networkErrors: [] },
   screenshots: [],
 }
 
@@ -77,6 +84,70 @@ async function revealAndCheckImages(page) {
   return images
 }
 
+function trackMediaRequests(page, viewport) {
+  page.on('request', (request) => {
+    const url = new URL(request.url())
+    if (mediaPrefix !== '/media/' && url.origin === origin && url.pathname.startsWith('/media/')) {
+      report.media.networkErrors.push({ viewport, url: request.url(), error: 'Media requested outside the Vite base' })
+    }
+  })
+  page.on('response', (response) => {
+    if (response.request().resourceType() === 'image' && response.status() >= 400) {
+      report.media.networkErrors.push({ viewport, url: response.url(), status: response.status() })
+    }
+  })
+}
+
+async function checkAllMediaPaths(page) {
+  const rendered = await page.locator('img, picture source').evaluateAll((elements) => elements.map((element) => ({
+    tag: element.tagName,
+    src: element.getAttribute('src'),
+    currentSrc: element instanceof HTMLImageElement ? element.currentSrc : null,
+    srcSet: element.getAttribute('srcset'),
+  })))
+  const urls = new Set()
+  const candidates = (srcSet) => srcSet.split(',').map((candidate) => candidate.trim().split(/\s+/)[0])
+  const assertMediaURL = (value) => {
+    const url = new URL(value, baseURL)
+    assert.equal(url.origin, origin, `Unexpected media origin: ${value}`)
+    assert.ok(url.pathname.startsWith(mediaPrefix), `Media URL must start with ${mediaPrefix}: ${value}`)
+    urls.add(url.href)
+  }
+
+  assert.ok(rendered.length > 0, 'No image elements found for media path checks.')
+  assert.ok(rendered.some((element) => element.tag === 'SOURCE'), 'AVIF sources are missing.')
+  for (const element of rendered) {
+    if (element.tag === 'IMG') {
+      assert.ok(element.src && element.currentSrc, 'An image is missing src or currentSrc.')
+      assertMediaURL(element.src)
+      assertMediaURL(element.currentSrc)
+    }
+    assert.ok(element.srcSet, `${element.tag} is missing its responsive srcSet.`)
+    for (const value of candidates(element.srcSet)) assertMediaURL(value)
+  }
+
+  // Fetch every format and size, including variants Chromium did not select.
+  // Checking the MIME type also catches Vite's HTTP 200 HTML fallback.
+  for (const image of Object.values(imageManifest)) {
+    for (const value of [image.src, ...candidates(image.srcSet), ...candidates(image.avifSrcSet)]) {
+      assertMediaURL(new URL(value.replace(/^\/+/, ''), baseURL).href)
+    }
+  }
+  for (const url of urls) {
+    if (verifiedMedia.has(url)) continue
+    const response = await page.request.get(url)
+    try {
+      assert.ok(response.ok(), `Image HTTP ${response.status()}: ${url}`)
+      const contentType = response.headers()['content-type'] ?? ''
+      assert.match(contentType, /^image\//i, `Image URL returned ${contentType || 'no content-type'}: ${url}`)
+      verifiedMedia.add(url)
+      report.media.checkedURLs.push({ url, status: response.status(), contentType })
+    } finally {
+      await response.dispose()
+    }
+  }
+}
+
 async function checkAccessibility(page, viewport, scope, selector) {
   let audit = new AxeBuilder({ page })
   if (selector) audit = audit.include(selector)
@@ -100,6 +171,7 @@ async function checkAccessibility(page, viewport, scope, selector) {
 
 function assertNoPageErrors() {
   assert.equal(report.pageErrors.length, 0, `Erreurs JavaScript : ${JSON.stringify(report.pageErrors)}`)
+  assert.equal(report.media.networkErrors.length, 0, `Media network errors: ${JSON.stringify(report.media.networkErrors)}`)
 }
 
 async function checkBasePage(page, viewport) {
@@ -116,6 +188,7 @@ async function checkBasePage(page, viewport) {
   }
 
   const imageCount = await revealAndCheckImages(page)
+  await checkAllMediaPaths(page)
   const dimensions = await page.evaluate(() => ({
     document: document.documentElement.scrollWidth,
     body: document.body.scrollWidth,
@@ -213,6 +286,7 @@ async function checkNormalMotion() {
   })
   try {
     const page = await context.newPage()
+    trackMediaRequests(page, 'desktop-motion-normal')
     page.on('pageerror', (error) => {
       report.pageErrors.push({ viewport: 'desktop-motion-normal', message: error.message })
     })
@@ -301,6 +375,7 @@ try {
     })
     try {
       const page = await context.newPage()
+      trackMediaRequests(page, viewport.name)
       page.setDefaultTimeout(10_000)
       page.on('pageerror', (error) => {
         report.pageErrors.push({ viewport: viewport.name, message: error.message })

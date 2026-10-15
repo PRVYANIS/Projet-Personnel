@@ -11,11 +11,20 @@ export function getPublicUrl() {
   return url.origin
 }
 
+export function getPublicSiteUrl(base = '/') {
+  const origin = getPublicUrl()
+  return origin ? new URL(base, `${origin}/`).href : null
+}
+
 export function seoPlugin() {
+  let base = '/'
   return {
     name: 'bureau-seo',
+    configResolved(config) {
+      base = config.base
+    },
     transformIndexHtml(html) {
-      const origin = getPublicUrl()
+      const publicSiteUrl = getPublicSiteUrl(base)
       const data = {
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
@@ -28,17 +37,18 @@ export function seoPlugin() {
           addressRegion: 'Tizi Ouzou',
           addressCountry: 'DZ',
         },
-        ...(origin ? { url: origin } : {}),
+        ...(publicSiteUrl ? { url: publicSiteUrl } : {}),
         ...(site.phone && !site.phoneProvisional ? { telephone: site.phone } : {}),
       }
       const tags = [
-        { tag: 'meta', attrs: { name: 'robots', content: origin ? 'index, follow' : 'noindex, nofollow' }, injectTo: 'head' },
+        { tag: 'meta', attrs: { name: 'robots', content: publicSiteUrl ? 'index, follow' : 'noindex, nofollow' }, injectTo: 'head' },
         { tag: 'script', attrs: { type: 'application/ld+json' }, children: JSON.stringify(data).replaceAll('<', '\\u003c'), injectTo: 'head' },
       ]
-      if (origin) {
-        tags.push({ tag: 'link', attrs: { rel: 'canonical', href: `${origin}/` }, injectTo: 'head' })
-        tags.push({ tag: 'meta', attrs: { property: 'og:url', content: `${origin}/` }, injectTo: 'head' })
-        html = html.replace('content="/media/residence-1280.webp"', `content="${origin}/media/residence-1280.webp"`)
+      if (publicSiteUrl) {
+        tags.push({ tag: 'link', attrs: { rel: 'canonical', href: publicSiteUrl }, injectTo: 'head' })
+        tags.push({ tag: 'meta', attrs: { property: 'og:url', content: publicSiteUrl }, injectTo: 'head' })
+        const imageUrl = new URL('media/residence-1280.webp', publicSiteUrl).href
+        html = html.replace(`content="${base}media/residence-1280.webp"`, `content="${imageUrl}"`)
       }
       return { html, tags }
     },

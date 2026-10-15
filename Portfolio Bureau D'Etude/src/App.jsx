@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { MotionConfig, motion, useReducedMotion } from 'motion/react'
 import { site, navigation, services, steps } from './data/site.js'
 import { images } from './data/images.js'
+import { publicAssetUrl, publicAssetSrcSet } from './utils/public-assets.js'
 import LegalDialog from './components/LegalDialog.jsx'
 
 function Icon({ name = 'arrow', className = '', ...props }) {
@@ -25,8 +26,8 @@ function Icon({ name = 'arrow', className = '', ...props }) {
 
 function Picture({ image, className = '', sizes = '(max-width: 760px) 100vw, 50vw', priority = false, ...props }) {
   return <picture className={className}>
-    <source type="image/avif" srcSet={image.avifSrcSet} sizes={sizes} />
-    <img src={image.src} srcSet={image.srcSet} sizes={sizes} width={image.width} height={image.height} alt={image.alt} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" {...props} />
+    <source type="image/avif" srcSet={publicAssetSrcSet(image.avifSrcSet)} sizes={sizes} />
+    <img src={publicAssetUrl(image.src)} srcSet={publicAssetSrcSet(image.srcSet)} sizes={sizes} width={image.width} height={image.height} alt={image.alt} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : 'auto'} decoding="async" {...props} />
   </picture>
 }
 
