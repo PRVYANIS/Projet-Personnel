@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { seoPlugin } from './scripts/seo-config.mjs'
 
 export default defineConfig({
-  base: '/Projet-Personnel/',
+  base: '/Projet-Personnel/Portfolio-Bureau-Etudes/',
   plugins: [react(), tailwindcss(), seoPlugin()],
   // Originals remain intact in public/images; only optimized site assets ship.
   publicDir: 'public/site',
