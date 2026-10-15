@@ -1,0 +1,27 @@
+{
+  "name": "bureau-etudes-kamel-moulouel",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "node scripts/generate-seo.mjs && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "images": "node scripts/optimize-images.mjs",
+    "test:browser": "node scripts/check-browser.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "motion": "^12.23.24"
+  },
+  "devDependencies": {
+    "vite": "^7.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "tailwindcss": "^4.1.17",
+    "@tailwindcss/vite": "^4.1.17",
+    "sharp": "^0.34.4",
+    "@playwright/test": "^1.56.0",
+    "@axe-core/playwright": "^4.11.0"
+  }
+}
